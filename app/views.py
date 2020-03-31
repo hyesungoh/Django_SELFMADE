@@ -28,6 +28,7 @@ def home(request, post=None):
         if form.is_valid():
             post = form.save(commit=False)
             post.date = timezone.now()
+            post.writer = request.user
             post.save()
             return redirect('home')
         

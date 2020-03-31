@@ -4,6 +4,14 @@
     <a href= "{% url 'logout' %}">
         Sign Out    
     </a>
+
+    <form method='POST'>
+        {% csrf_token %}
+        <table>
+            {{form.as_table}}
+        </table>
+        <input type='submit', value='submit'>
+    </form>
 {% else %}
     <h2>hello Stranger</h2>
     <a href= "{% url 'signin' %}">
@@ -15,16 +23,11 @@
 {% endif %}
 
 
-<form method='POST'>
-    {% csrf_token %}
-    <table>
-        {{form.as_table}}
-    </table>
-    <input type='submit', value='submit'>
-</form>
+
 
 {% for post in posts.all %}
-    <hr/>    
+    <hr/>
+    <h6>write by {{ post.writer }} </h6>
     <h4>{{ post.title }}</h4>
     <h5>{{ post.body }}</h5>
     <h6>write at {{ post.date }}</h6>
