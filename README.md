@@ -23,3 +23,8 @@ no such column
 ```
 ###### 다음에 할 것 : POST와 COMMENT 연결 및 구현하기
 
+#### 2020.03.31
+##### Post와 Comment의 연결 성공
+##### 한 template(home)에서 글 작성, 댓글 작성, 글 수정을 가능하게 하려해서 막힘
+##### superuser를 사용하여 model 관계는 잘된다는 것을 확인함
+###### 다음에 할 것 : home template에서 댓글 작성 가능하게 할 것

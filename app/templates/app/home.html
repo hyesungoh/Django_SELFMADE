@@ -32,4 +32,16 @@
     <h5>{{ post.body }}</h5>
     <h6>write at {{ post.date }}</h6>
     <a href="{% url 'edit' pk=post.pk %}">edit</a>
+    {% for comment in post.comments.all %}
+        <h6>{{ comment.c_writer }} : {{ comment.text }}</h6>
+    {% endfor %}
+    {% if user.is_authenticated %}
+        <form method='POST' action='/comment/{{ post }}'>
+            {% csrf_token %}
+            <table>
+                <input type='text' name="cm">
+            </table>
+            <input type='submit', value='submit'>
+        </form>
+    {% endif %}
 {% endfor %}

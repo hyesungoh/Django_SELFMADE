@@ -11,4 +11,11 @@ class Post(models.Model):
     date = models.DateTimeField('date published')
     body = models.TextField()
     writer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="writer", default="")
+
+class Comment(models.Model):
+    def __str__(self):
+        return self.text
     
+    c_writer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="c_writer", default="")
+    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, related_name ="comments")
+    text = models.CharField(max_length=100)
