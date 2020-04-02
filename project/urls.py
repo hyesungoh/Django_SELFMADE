@@ -21,7 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', app.views.home, name="home"),
     path('edit/<int:pk>', app.views.edit, name='edit'),
-    # path('edit/<str:pk>', app.views.commenting, name='commenting'),
+    path('comment/<int:pk>', app.views.commenting, name='commenting'),
     path('signin', app.views.signin, name='signin'),
     
     #Auth에서 제공해주는 기능쓰기

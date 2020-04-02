@@ -21,7 +21,7 @@ from django.http import HttpResponse
 #         form = PostForm(instance=post)
 #         return render(request, 'app/home.html', {'form':form})
 
-def home(request, post=None, post_id=None, comment=None):
+def home(request, post=None, comment=None):
     posts = Post.objects
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
@@ -32,13 +32,6 @@ def home(request, post=None, post_id=None, comment=None):
             post.writer = request.user
             post.save()
             return redirect('home')
-        elif comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.post_id = post_id
-            comment.text= form.cleaned_data["text"]
-            comment.c_writer = request.user
-            comment.save()
-            return redirect('home')
         
     else:
         form = PostForm(instance=post)
@@ -46,14 +39,26 @@ def home(request, post=None, post_id=None, comment=None):
         return render(request, 'app/home.html', {'form': form, 'c_form': c_form, 'posts': posts})
     # return render(request, 'app/home.html', {'posts': posts})
 
-# def commenting(request, pk):
-#     post = get_object_or_404(Post, pk=pk)
-    # return home(request, post)
-    
-    
 def edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return home(request, post)
+    
+    
+def commenting(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post_id = post
+            comment.text= form.cleaned_data["text"]
+            comment.c_writer = request.user
+            comment.save()
+            return redirect('home')
+    else:
+        form = PostForm(instance=post)
+        c_form = CommentForm(instance=comment)
+        return render(request, 'app/home.html', {'form': form, 'c_form': c_form, 'posts': posts})
 
 def signin(request):
     if request.method == "POST":

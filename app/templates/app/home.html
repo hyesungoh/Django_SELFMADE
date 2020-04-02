@@ -36,10 +36,10 @@
         <h6>{{ comment.c_writer }} : {{ comment.text }}</h6>
     {% endfor %}
     {% if user.is_authenticated %}
-        <form method='POST' action='/comment/{{ post }}'>
+        <form method='POST' action='/comment/{{ post.id }}'>
             {% csrf_token %}
             <table>
-                <input type='text' name="cm">
+                {{ c_form.as_p }}
             </table>
             <input type='submit', value='submit'>
         </form>
