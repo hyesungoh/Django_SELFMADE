@@ -1,25 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from .models import Post
+from .models import Post, Comment
 from .forms import PostForm, CommentForm, LoginForm, UserForm
 
 # SIGN IN, OUT
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponse
-
-# Create your views here.
-# def postform(request, post=None):
-#     if request.method == 'POST':
-#         form = PostForm(request.POST, instance=post)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.date = timezone.now()
-#             post.save()
-#             return redirect('home')
-#     else:
-#         form = PostForm(instance=post)
-#         return render(request, 'app/home.html', {'form':form})
 
 def home(request, post=None, comment=None):
     posts = Post.objects
@@ -70,6 +57,14 @@ def comment(request, pk):
         c_form = CommentForm(instance=comment)
         return render(request, 'app/home.html', {'form': form, 'c_form': c_form, 'posts': posts})
 
+def comment_delete(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    if comment.c_writer == request.user:
+        comment.delete()
+        return redirect('home')
+    else:
+        return HttpResponse('You can delete your own post')
+    
 def signin(request):
     if request.method == "POST":
         form = LoginForm(request.POST)

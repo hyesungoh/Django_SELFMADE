@@ -31,13 +31,22 @@
     <h4>{{ post.title }}</h4>
     <h5>{{ post.body }}</h5>
     <h6>write at {{ post.date }}</h6>
+
+    <!-- 작성자와 현재 SignIn한 사람이 같은 지 확인 -->
     {% if post.writer == request.user %}
-    <a href="{% url 'edit' pk=post.pk %}">edit</a>
-    <a href="{% url 'delete' pk=post.pk %}">delete</a>
+        <a href="{% url 'edit' pk=post.pk %}">edit</a>
+        <a href="{% url 'delete' pk=post.pk %}">delete</a>
     {% endif %}
+
     {% for comment in post.comments.all %}
-        <h6>{{ comment.c_writer }} : {{ comment.text }}</h6>
+        <!--  단지 같은 열에 두고싶은 귀찮은 마음에.. else 추가-->
+        {% if comment.c_writer == request.user %}
+            <h6>{{ comment.c_writer }} : {{ comment.text }} / <a href="{% url 'comment_delete' pk=comment.pk %}">delete</a></h6>
+        {% else %}
+            <h6>{{ comment.c_writer }} : {{ comment.text }} </h6>
+        {% endif %}
     {% endfor %}
+
     {% if user.is_authenticated %}
         <form method='POST' action='/comment/{{ post.id }}'>
             {% csrf_token %}

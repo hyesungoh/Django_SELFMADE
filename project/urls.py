@@ -22,11 +22,12 @@ urlpatterns = [
     path('', app.views.home, name="home"),
     path('edit/<int:pk>', app.views.edit, name='edit'),
     path('delete/<int:pk>', app.views.delete, name='delete'),
-    path('comment/<int:pk>', app.views.comment, name='commenting'),
+    path('comment/<int:pk>', app.views.comment, name='comment'),
+    path('comment_delete/<int:pk>', app.views.comment_delete, name='comment_delete'),
     path('signin', app.views.signin, name='signin'),
+    path('signup', app.views.signup, name='signup'),
     
     #Auth에서 제공해주는 기능쓰기
     path('app/', include('django.contrib.auth.urls')),
-    path('signup', app.views.signup, name='signup'),
-    # path('post/new', app.views.postform, name='newpost')
+    
 ]
