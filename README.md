@@ -1,5 +1,6 @@
 ## 군대 사지방에서하는 Django 공부 !!
-
+### 목표 : INSTAGRAM ~~***(backend)***~~
+___
 #### 2020.03.30
 ##### create, read, update 기능 구현
 ##### Sign in, up, out 구현
@@ -67,5 +68,19 @@ def commenting(request, pk):
 ##### views에서 저장 후, redirect를 home으로 하여 한 template에서 한 것처럼 보이게 함
 
 ###### 다음에 할 것 : 글, 댓글 작성 유저와 Signin한 유저가 같을 시 글, 댓글 삭제하기 !!
-=======
->>>>>>> f68e675cf9a2a5291ae1900e985510f3c2713c56
+
+___
+#### 2020.04.05
+##### 글과 댓글의 작성자가 현재 SignIn한 User와 같을 시 삭제 및 수정이 가능함
+###### 댓글은 삭제만
+
+##### csrf 같이 주소를 직접쳐서 들어가면 삭제가 되어 views와 home.html에서 두 번 확인
+```python
+# Post 작성자가 현재 SignIn한 User와 같은 지 확인
+if post.writer == request.user:
+```
+```html
+<!-- Comment 작성자가 현재 SignIn한 User와 같은 지 확인-->
+{% if comment.c_writer == request.user %}
+```
+###### 다음에 할 것 : 댓글 수정, 글에 Hashtag 추가
