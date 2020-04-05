@@ -24,7 +24,6 @@ no such column
 ```
 ###### 다음에 할 것 : POST와 COMMENT 연결 및 구현하기
 
-___
 #### 2020.04.01
 ##### Post와 Comment의 연결 성공
 ##### 한 template(home)에서 글 작성, 댓글 작성, 글 수정을 가능하게 하려해서 막힘
@@ -68,3 +67,5 @@ def commenting(request, pk):
 ##### views에서 저장 후, redirect를 home으로 하여 한 template에서 한 것처럼 보이게 함
 
 ###### 다음에 할 것 : 글, 댓글 작성 유저와 Signin한 유저가 같을 시 글, 댓글 삭제하기 !!
+=======
+>>>>>>> f68e675cf9a2a5291ae1900e985510f3c2713c56

@@ -41,10 +41,20 @@ def home(request, post=None, comment=None):
 
 def edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return home(request, post)
+    if post.writer == request.user:
+        return home(request, post)
+    else:
+        return HttpResponse('You can edit your own post')
+
+def delete(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if post.writer == request.user:
+        post.delete()
+        return redirect('home')
+    else:
+        return HttpResponse('You can delete your own post')
     
-    
-def commenting(request, pk):
+def comment(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
         form = CommentForm(request.POST)
