@@ -23,6 +23,7 @@ urlpatterns = [
     path('edit/<int:pk>', app.views.edit, name='edit'),
     path('delete/<int:pk>', app.views.delete, name='delete'),
     path('comment/<int:pk>', app.views.comment, name='comment'),
+    path('comment_edit/<int:pk>', app.views.comment_edit, name='comment_edit'),
     path('comment_delete/<int:pk>', app.views.comment_delete, name='comment_delete'),
     path('signin', app.views.signin, name='signin'),
     path('signup', app.views.signup, name='signup'),

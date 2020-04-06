@@ -1,5 +1,58 @@
-<form method='POST'>
-    {% csrf_token %}
-    {{form.as_table}}
-    <input type='submit', value='submit'>
-</form>
+{% if user.is_authenticated %}
+    <h2>hello {{ user.username }}</h2>
+    <a href= "{% url 'logout' %}">
+        Sign Out    
+    </a>
+    
+{% else %}
+    <h2>hello Stranger</h2>
+    <a href= "{% url 'signin' %}">
+        Sign In Please
+    </a>
+    <a href= "{% url 'signup' %}">
+        or Sign up    
+    </a>
+{% endif %}
+
+{% for post in posts.all %}
+    {% if post.id == e_p %}
+        <form method='POST'>
+            {% csrf_token %}
+            <table>
+                {{form.as_table}}
+            </table>
+            <input type='submit', value='submit'>
+        </form>
+        {% for comment in post.comments.all %}
+            <h6>{{ comment.c_writer }} : {{ comment.text }} </h6>
+        {% endfor %}
+    {% else %}
+        <h6>write by {{ post.writer }} </h6>
+        <h4>{{ post.title }}</h4>
+        <h5>{{ post.body }}</h5>
+        <h6>write at {{ post.date }}</h6>
+
+        <!-- 댓글 보여주기 -->
+        {% for comment in post.comments.all %}
+            <!--  단지 같은 열에 두고싶은 귀찮은 마음에.. else 추가-->
+            {% if comment.c_writer == request.user %}
+                <h6>{{ comment.c_writer }} : {{ comment.text }} / <a href="{% url 'comment_delete' pk=comment.pk %}">delete</a></h6>
+            {% else %}
+                <h6>{{ comment.c_writer }} : {{ comment.text }} </h6>
+            {% endif %}
+        {% endfor %}
+
+        <!--  댓글 작성 -->
+        {% if user.is_authenticated %}
+        <form method='POST' action='/comment/{{ post.id }}'>
+            {% csrf_token %}
+            <table>
+                {{ c_form.as_p }}
+            </table>
+            <input type='submit', value='submit'>
+        </form>
+    {% endif %}
+    {% endif %}
+    <hr/>
+    
+{% endfor %}

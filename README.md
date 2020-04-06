@@ -83,4 +83,27 @@ if post.writer == request.user:
 <!-- Comment 작성자가 현재 SignIn한 User와 같은 지 확인-->
 {% if comment.c_writer == request.user %}
 ```
-###### 다음에 할 것 : 댓글 수정, 글에 Hashtag 추가
+###### 다음에 할 것 : 댓글 수정, Post에 Hashtag 추가
+
+___
+#### 2020.04.06
+##### 댓글 수정이 가능함
+##### home view에서 모든 동작을 처리하는 것에서 edit(post), comment_edit view를 만들어 나누어서 처리하는 형식으로 바꿈
+###### edit에서는 새로운 글쓰기 제한, comment_edit에서는 새로운 댓글 및 삭제 제한 등 다른 점을 부여함
+
+```html
+<!-- edit.html / 'e_p': edit_post  -->
+{% for post in posts.all %}
+    {% if post.id == e_p %}
+```
+##### 위와 같이 순서에 맞는 글, 댓글 공간에 form을 둘 수 있게 됨
+
+```python
+# views.py > def edit
+if edit_post.writer != request.user:
+    HttpResponse('You can edit your own post')
+```
+##### csrf 방지를 위해 위 문법을 사용했는데 ~~방금 작동하지 않는 걸 확인 함ㅋ~~
+##### HttpResponse에 break같은 기능이 없는 것으로 추정됨
+###### 다음에 할 것 : views.py > def edit, comment_edit에 csrf 방지하기, Post에 Hashtag 추가하기
+

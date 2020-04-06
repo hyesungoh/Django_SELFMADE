@@ -1,3 +1,5 @@
+<h1>
+</h1>
 
 {% if user.is_authenticated %}
     <h2>hello {{ user.username }}</h2>
@@ -41,7 +43,9 @@
     {% for comment in post.comments.all %}
         <!--  단지 같은 열에 두고싶은 귀찮은 마음에.. else 추가-->
         {% if comment.c_writer == request.user %}
-            <h6>{{ comment.c_writer }} : {{ comment.text }} / <a href="{% url 'comment_delete' pk=comment.pk %}">delete</a></h6>
+            <h6>{{ comment.c_writer }} : {{ comment.text }}
+                / <a href="{% url 'comment_edit' pk=comment.pk %}">edit</a>
+                / <a href="{% url 'comment_delete' pk=comment.pk %}">delete</a></h6>
         {% else %}
             <h6>{{ comment.c_writer }} : {{ comment.text }} </h6>
         {% endif %}

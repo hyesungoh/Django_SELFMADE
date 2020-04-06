@@ -8,30 +8,40 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponse
 
-def home(request, post=None, comment=None):
+def home(request):
     posts = Post.objects
     if request.method == 'POST':
-        form = PostForm(request.POST, instance=post)
-        comment_form = CommentForm(request.POST, instance=comment)
+        form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.date = timezone.now()
             post.writer = request.user
             post.save()
             return redirect('home')
-        
     else:
-        form = PostForm(instance=post)
-        c_form = CommentForm(instance=comment)
+        form = PostForm()
+        c_form = CommentForm()
         return render(request, 'app/home.html', {'form': form, 'c_form': c_form, 'posts': posts})
-    # return render(request, 'app/home.html', {'posts': posts})
 
 def edit(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if post.writer == request.user:
-        return home(request, post)
+    edit_post = get_object_or_404(Post, pk=pk)
+
+    # csrf 방지
+    if edit_post.writer != request.user:
+        HttpResponse('You can edit your own post')
+
+    posts = Post.objects
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=edit_post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.date = timezone.now()
+            post.writer = request.user
+            post.save()
+            return redirect('home')
     else:
-        return HttpResponse('You can edit your own post')
+        form = PostForm(instance=edit_post)
+        return render(request, 'app/edit.html', {'e_p': edit_post.id ,'form': form, 'posts': posts})
 
 def delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -52,11 +62,28 @@ def comment(request, pk):
             comment.c_writer = request.user
             comment.save()
             return redirect('home')
-    else:
-        form = PostForm(instance=post)
-        c_form = CommentForm(instance=comment)
-        return render(request, 'app/home.html', {'form': form, 'c_form': c_form, 'posts': posts})
+    
 
+def comment_edit(request, pk):
+    edit_comment = get_object_or_404(Comment, pk=pk)
+    posts = Post.objects
+
+    # csrf 방지
+    if edit_comment.c_writer != request.user:
+        HttpResponse('You can edit your own comment')
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=edit_comment)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.text = form.cleaned_data["text"]
+            comment.save()
+            return redirect('home')
+    else:
+        form = CommentForm(instance=edit_comment)
+        return render(request, 'app/comment_edit.html', {'e_c': edit_comment.id ,'form': form, 'posts': posts})
+
+    
 def comment_delete(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     if comment.c_writer == request.user:
