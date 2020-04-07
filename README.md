@@ -107,3 +107,36 @@ if edit_post.writer != request.user:
 ##### HttpResponse에 break같은 기능이 없는 것으로 추정됨
 ###### 다음에 할 것 : views.py > def edit, comment_edit에 csrf 방지하기, Post에 Hashtag 추가하기
 
+___
+#### 2020.04.07
+```python
+# views.py > def edit
+if edit_post.writer != request.user:
+    return HttpResponse('You can edit your own post')
+```
+##### HttpResponse는 앞에 return을 안붙여서 생긴 해프닝이였다 ㅋ
+
+```python
+# views.py > def home / '#'을 기준으로 해시태그 만들기 !
+            tags = form.cleaned_data['hashtag']
+            str_tags = tags.split('#')
+            list_tags = list()
+            for tag in str_tags:
+                hashtag = HashtagForm().save(commit=False)
+                # 이미 만들어진 해시태그인지 검사
+                if Hashtag.objects.filter(name=tag):
+                    list_tags.append(Hashtag.objects.get(name=tag))
+                else:
+                    hashtag.name = tag
+                    hashtag.save()
+                    list_tags.append(hashtag)
+            
+            post.save()
+            post.hashtags.add(*list_tags)
+```
+
+##### Post와 Hashtag M:N 관계 형성 완료
+###### Post에 CharField hashtag와 ManyToManyField hashtags를 추가 후
+###### template에서 hashtag만 입력받으며 view에서 #을 기준으로 hashtag를 split하고 각 객체마다 list에 append하고 hashtags에 add함
+##### views.py > def edit도 똑같이 적용
+###### 다음에 할 것 : hashtag와 user template 만들기 ! (hashtag, user별 post보기)

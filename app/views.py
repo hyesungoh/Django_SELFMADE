@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from .models import Post, Comment
-from .forms import PostForm, CommentForm, LoginForm, UserForm
+from .models import Post, Comment, Hashtag
+from .forms import PostForm, CommentForm, HashtagForm, LoginForm, UserForm
 
 # SIGN IN, OUT
 from django.contrib.auth.models import User
@@ -16,7 +16,26 @@ def home(request):
             post = form.save(commit=False)
             post.date = timezone.now()
             post.writer = request.user
+            
+            # '#'을 기준으로 해시태그 만들기 !
+            tags = form.cleaned_data['hashtag']
+            str_tags = tags.split('#')
+            list_tags = list()
+            for tag in str_tags:
+                hashtag = HashtagForm().save(commit=False)
+                # 이미 만들어진 해시태그인지 검사
+                if Hashtag.objects.filter(name=tag):
+                    list_tags.append(Hashtag.objects.get(name=tag))
+                else:
+                    hashtag.name = tag
+                    hashtag.save()
+                    list_tags.append(hashtag)
+            
             post.save()
+            post.hashtags.add(*list_tags)
+            
+            # 이걸 따로 할 필요가 있을까?
+            # form.save_m2m()
             return redirect('home')
     else:
         form = PostForm()
@@ -28,8 +47,8 @@ def edit(request, pk):
 
     # csrf 방지
     if edit_post.writer != request.user:
-        HttpResponse('You can edit your own post')
-
+        return HttpResponse('You can edit your own post')
+        
     posts = Post.objects
     if request.method == 'POST':
         form = PostForm(request.POST, instance=edit_post)
@@ -37,12 +56,28 @@ def edit(request, pk):
             post = form.save(commit=False)
             post.date = timezone.now()
             post.writer = request.user
+            
+            tags = form.cleaned_data['hashtag']
+            str_tags = tags.split('#')
+            list_tags = list()
+            for tag in str_tags:
+                hashtag = HashtagForm().save(commit=False)
+                if Hashtag.objects.filter(name=tag):
+                    list_tags.append(Hashtag.objects.get(name=tag))
+                else:
+                    hashtag.name = tag
+                    hashtag.save()
+                    list_tags.append(hashtag)
+
             post.save()
+            post.hashtags.add(*list_tags)
             return redirect('home')
     else:
         form = PostForm(instance=edit_post)
         return render(request, 'app/edit.html', {'e_p': edit_post.id ,'form': form, 'posts': posts})
-
+        
+        
+        
 def delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if post.writer == request.user:
@@ -70,7 +105,7 @@ def comment_edit(request, pk):
 
     # csrf 방지
     if edit_comment.c_writer != request.user:
-        HttpResponse('You can edit your own comment')
+        return HttpResponse('You can edit your own comment')
 
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=edit_comment)
@@ -91,6 +126,24 @@ def comment_delete(request, pk):
         return redirect('home')
     else:
         return HttpResponse('You can delete your own post')
+    
+# def hashtag(request, hashtag=None):
+#     if request.method == 'POST':
+#         form = HashtagForm(request.POST, instance=HashtagForm)
+#         if form.is_valid():
+#             hashtag = form.save(commit=False)
+#             if Hashtag.objects.filter(name=form.cleaned_data['name']):
+#                 form = HashtagForm()
+#                 error_message = "Already exiest"
+#                 return render(request, 'app/hashtag.html', {'form': form, 'e_m': error_message})
+#             else:
+#                 hashtag.name = form.cleaned_data['name']
+#                 hashtag.save()
+#             return redirect('home')
+#     else:
+#         form = HashtagForm(instance=hashtag)
+#         return render(request, 'app/hashtag.html', {'form': form})
+    
     
 def signin(request):
     if request.method == "POST":
