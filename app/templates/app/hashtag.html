@@ -1,33 +1,11 @@
-<h1>
-</h1>
+<!--  
+' '인 해ㅣ태그가 있어서 urls에 str을 pk로 못줌
+왜 생기는 지는 장고보다는 파이썬 문법에 작은 오류가 있을 것으로 추정
+-->
 
-{% if user.is_authenticated %}
-    <h2>hello <a href="{% url 'user' pk=user.username %}">{{ user.username }}</a></h2>
-    <a href= "{% url 'logout' %}">
-        Sign Out    
-    </a>
+<h1>This is Post with {{ hashtag }} tag</h1>
 
-    <form method='POST'>
-        {% csrf_token %}
-        <table>
-            {{form.as_table}}
-        </table>
-        <input type='submit', value='submit'>
-    </form>
-{% else %}
-    <h2>hello Stranger</h2>
-    <a href= "{% url 'signin' %}">
-        Sign In Please
-    </a>
-    <a href= "{% url 'signup' %}">
-        or Sign up    
-    </a>
-{% endif %}
-
-
-
-
-{% for post in posts.all %}
+{% for post in posts %}
     <hr/>
     <h6>write by <a href="{% url 'user' pk=post.writer %}">{{ post.writer }}</a> </h6>
     <h4>{{ post.title }}</h4>
@@ -57,14 +35,4 @@
             <h6><a href="{% url 'user' pk=comment.c_writer %}">{{ comment.c_writer }}</a> : {{ comment.text }} </h6>
         {% endif %}
     {% endfor %}
-
-    {% if user.is_authenticated %}
-        <form method='POST' action='/comment/{{ post.id }}'>
-            {% csrf_token %}
-            <table>
-                {{ c_form.as_p }}
-            </table>
-            <input type='submit', value='submit'>
-        </form>
-    {% endif %}
 {% endfor %}

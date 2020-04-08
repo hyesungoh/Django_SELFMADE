@@ -1,33 +1,11 @@
-<h1>
-</h1>
+<!--  
+user.html에서 post와 comment 둘 다 edit 및 delete 했을 시
+home.html로 감
+views에서 왔던 곳을 기억해서 보내줄 수 있을까? like rubyonrails
+-->
 
-{% if user.is_authenticated %}
-    <h2>hello <a href="{% url 'user' pk=user.username %}">{{ user.username }}</a></h2>
-    <a href= "{% url 'logout' %}">
-        Sign Out    
-    </a>
-
-    <form method='POST'>
-        {% csrf_token %}
-        <table>
-            {{form.as_table}}
-        </table>
-        <input type='submit', value='submit'>
-    </form>
-{% else %}
-    <h2>hello Stranger</h2>
-    <a href= "{% url 'signin' %}">
-        Sign In Please
-    </a>
-    <a href= "{% url 'signup' %}">
-        or Sign up    
-    </a>
-{% endif %}
-
-
-
-
-{% for post in posts.all %}
+<h1>This is {{user.username}}'s home</h1>
+{% for post in posts %}
     <hr/>
     <h6>write by <a href="{% url 'user' pk=post.writer %}">{{ post.writer }}</a> </h6>
     <h4>{{ post.title }}</h4>
@@ -67,4 +45,5 @@
             <input type='submit', value='submit'>
         </form>
     {% endif %}
+
 {% endfor %}

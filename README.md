@@ -140,3 +140,35 @@ if edit_post.writer != request.user:
 ###### template에서 hashtag만 입력받으며 view에서 #을 기준으로 hashtag를 split하고 각 객체마다 list에 append하고 hashtags에 add함
 ##### views.py > def edit도 똑같이 적용
 ###### 다음에 할 것 : hashtag와 user template 만들기 ! (hashtag, user별 post보기)
+
+___
+#### 2020.04.08
+##### Hashtag와 User의 개인 Template 구현 완료
+```python
+# views.py / def user는 댓글 작성도 가능하게 구현
+def user(request, pk):
+    user = User.objects.get(username=pk)
+    posts = Post.objects.filter(writer=user)
+    c_form = CommentForm()
+    return render(request, 'app/user.html', {'user': user, 'posts': posts, 'c_form': c_form})
+
+def hashtag(request, pk):
+    hashtag = Hashtag.objects.get(id=pk)
+    posts = Post.objects.filter(hashtags=hashtag)
+    return render(request, 'app/hashtag.html', {'hashtag': hashtag, 'posts': posts})
+```
+##### Model.object.filter method를 사용하여 간편했음
+
+```html
+<!-- user template로 가기-->
+<a href="{% url 'user' pk=user.username %}">{{ user.username }}</a>
+
+<!-- hashtag template로 가기-->
+<a href="{% url 'hashtag' pk=hashtag.id %}">
+    <span>{{ hashtag.name }}</span>
+</a>
+```
+##### App의 자연스러운 flow를 위해서 적재적소에 a 태그를 배치
+###### 다음에 할 것 : Image Uploader 구현 및 Post에 Img 포함
+###### User Profile Img / User Follow, Following / Follow한 User의 Post만 보기
+###### ~~User Model을 갈아엎어야하나 .. DB 설계가 중요하다는 것을 다시 깨달음~~

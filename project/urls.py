@@ -22,9 +22,14 @@ urlpatterns = [
     path('', app.views.home, name="home"),
     path('edit/<int:pk>', app.views.edit, name='edit'),
     path('delete/<int:pk>', app.views.delete, name='delete'),
+    
     path('comment/<int:pk>', app.views.comment, name='comment'),
     path('comment_edit/<int:pk>', app.views.comment_edit, name='comment_edit'),
     path('comment_delete/<int:pk>', app.views.comment_delete, name='comment_delete'),
+    
+    path('user/<str:pk>', app.views.user, name='user'),
+    path('hashtag/<int:pk>', app.views.hashtag, name='hashtag'),
+    
     path('signin', app.views.signin, name='signin'),
     path('signup', app.views.signup, name='signup'),
     

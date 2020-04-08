@@ -134,7 +134,7 @@ def comment_delete(request, pk):
 #             hashtag = form.save(commit=False)
 #             if Hashtag.objects.filter(name=form.cleaned_data['name']):
 #                 form = HashtagForm()
-#                 error_message = "Already exiest"
+#                 error_message = "Already"
 #                 return render(request, 'app/hashtag.html', {'form': form, 'e_m': error_message})
 #             else:
 #                 hashtag.name = form.cleaned_data['name']
@@ -143,8 +143,18 @@ def comment_delete(request, pk):
 #     else:
 #         form = HashtagForm(instance=hashtag)
 #         return render(request, 'app/hashtag.html', {'form': form})
-    
-    
+
+def user(request, pk):
+    user = User.objects.get(username=pk)
+    posts = Post.objects.filter(writer=user)
+    c_form = CommentForm()
+    return render(request, 'app/user.html', {'user': user, 'posts': posts, 'c_form': c_form})
+
+def hashtag(request, pk):
+    hashtag = Hashtag.objects.get(id=pk)
+    posts = Post.objects.filter(hashtags=hashtag)
+    return render(request, 'app/hashtag.html', {'hashtag': hashtag, 'posts': posts})
+
 def signin(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
