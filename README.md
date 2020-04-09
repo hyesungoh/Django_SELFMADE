@@ -176,6 +176,7 @@ def hashtag(request, pk):
 ___
 #### 2020.04.09
 ##### Post model에 Image 추가 / image upload와 확인 가능
+###### RubyOnRails와 다르게 동일 이름의 img를 upload한 상황을 알아서 해결해줌
 ```python
 # settings.py / static과 media의 root, url 설정
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -199,4 +200,5 @@ form = PostForm(request.POST, request.FILES)
 <form method='POST' enctype="multipart/form-data">
 ```
 ##### img upload를 위해 추가 및 수정해준 것들
+
 ###### 다음에 할 것 : User 모델 Custom (follow, following)
