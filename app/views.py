@@ -11,7 +11,7 @@ from django.http import HttpResponse
 def home(request):
     posts = Post.objects
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.date = timezone.now()
@@ -51,7 +51,7 @@ def edit(request, pk):
         
     posts = Post.objects
     if request.method == 'POST':
-        form = PostForm(request.POST, instance=edit_post)
+        form = PostForm(request.POST, request.FILES, instance=edit_post)
         if form.is_valid():
             post = form.save(commit=False)
             post.date = timezone.now()
@@ -74,7 +74,7 @@ def edit(request, pk):
             return redirect('home')
     else:
         form = PostForm(instance=edit_post)
-        return render(request, 'app/edit.html', {'e_p': edit_post.id ,'form': form, 'posts': posts})
+        return render(request, 'app/edit.html', {'e_p': edit_post.id, 'form': form, 'posts': posts})
         
         
         

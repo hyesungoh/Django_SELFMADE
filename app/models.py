@@ -11,6 +11,9 @@ class Post(models.Model):
     date = models.DateTimeField('date published')
     body = models.TextField()
     writer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="writer", default="")
+    
+    image = models.ImageField(upload_to='images/', blank=True)
+    
     hashtag = models.CharField(max_length=200, blank=True)
     hashtags = models.ManyToManyField('Hashtag', blank=True)
 

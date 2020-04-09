@@ -172,3 +172,31 @@ def hashtag(request, pk):
 ###### 다음에 할 것 : Image Uploader 구현 및 Post에 Img 포함
 ###### User Profile Img / User Follow, Following / Follow한 User의 Post만 보기
 ###### ~~User Model을 갈아엎어야하나 .. DB 설계가 중요하다는 것을 다시 깨달음~~
+
+___
+#### 2020.04.09
+##### Post model에 Image 추가 / image upload와 확인 가능
+```python
+# settings.py / static과 media의 root, url 설정
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
+
+# urls.py
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# views.py > def home
+form = PostForm(request.POST, request.FILES)
+```
+```html
+<form method='POST' enctype="multipart/form-data">
+```
+##### img upload를 위해 추가 및 수정해준 것들
+###### 다음에 할 것 : User 모델 Custom (follow, following)
