@@ -33,6 +33,8 @@ urlpatterns = [
     path('comment_delete/<int:pk>', app.views.comment_delete, name='comment_delete'),
     
     path('user/<str:pk>', app.views.user, name='user'),
+    path('follow/<int:fk>', app.views.follow, name='follow'),
+    path('unfollow/<int:fk>', app.views.unfollow, name='unfollow'),
     path('hashtag/<int:pk>', app.views.hashtag, name='hashtag'),
     
     path('signin', app.views.signin, name='signin'),

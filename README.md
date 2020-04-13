@@ -202,3 +202,61 @@ form = PostForm(request.POST, request.FILES)
 ##### img upload를 위해 추가 및 수정해준 것들
 
 ###### 다음에 할 것 : User 모델 Custom (follow, following)
+
+___
+#### 2020.04.13
+##### User간 Follow, Unfollow 가능 및 확인 가능
+```python
+# models.py
+class Relationship(models.Model):
+    who = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="who", on_delete=models.CASCADE)
+    whom = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="whom", on_delete=models.CASCADE)
+    
+# views.py
+def follow(request, fk):
+    who = request.user
+    whom = User.objects.get(id=fk)
+    r = Relationship()
+    r.who = who
+    r.whom = whom
+    r.save()
+    return redirect('home')
+
+def unfollow(request, fk):
+    who = request.user
+    whom = User.objects.get(id=fk)
+    Relationship.objects.get(who=who, whom=whom).delete()
+    return redirect('home')  
+```
+##### User Model을 Custom하지 않고 관계형 Model을 만들어서 함
+##### Follow 함수에서 Unfollow 기능까지 구현할까 하다 Template에서 Follow 혹은 Unfollow 확인을 위해 위처럼 함
+
+```python
+# views.py > def user
+    r = Relationship.objects
+    # flw, flwing 명단을 확인하기 위해
+    flw_list = r.filter(who=user)
+    flwer_list = r.filter(whom=user)
+    flw = flw_list.count()
+    flwer = flwer_list.count()
+
+    # 현재 Signin한 user의 Follow 유무를 위해
+    b = r.filter(who=request.user, whom=user)
+```
+
+```html
+<!-- user.html -->
+<h1>This is {{user.username}}'s home</h1>
+<p>follow : {{ flw }}</p>
+{% for f in flw_list %}
+{{ f.whom }}
+{% endfor %}
+
+<p>following : {{ flwer }}</p>
+{% for f in flwer_list %}
+{{ f.who }}
+{% endfor %}
+```
+##### Template에서 Model.objects.filter(), count()등 method가 동작하지 않아 views에서 넘겨주는 변수들이 많음
+###### 그렇다고 Template에서 모든 Relationship을 반복하며 확인하는 것은 비효율적이라 생각함
+##### 다음에 할 것 : Post에 좋아요 기능, Signin 안됐을 시 User Template, redirect를 왔던 곳으로 보내기?

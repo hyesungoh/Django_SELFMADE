@@ -5,6 +5,24 @@ views에서 왔던 곳을 기억해서 보내줄 수 있을까? like rubyonrails
 -->
 
 <h1>This is {{user.username}}'s home</h1>
+<p>follow : {{ flw }}</p>
+{% for f in flw_list %}
+{{ f.whom }}
+{% endfor %}
+
+<p>following : {{ flwer }}</p>
+{% for f in flwer_list %}
+{{ f.who }}
+{% endfor %}
+
+
+
+{% if b %}
+    <a href ="{% url 'unfollow' fk=user.id %}">unfollow</a>
+{% else %}
+    <a href="{% url 'follow' fk=user.id%}">follow</a>
+{% endif %}
+
 {% for post in posts %}
     <hr/>
     <h6>write by <a href="{% url 'user' pk=post.writer %}">{{ post.writer }}</a> </h6>

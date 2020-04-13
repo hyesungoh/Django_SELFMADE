@@ -30,3 +30,9 @@ class Hashtag(models.Model):
         return self.name
     
     name = models.CharField(max_length=50)
+
+class Relationship(models.Model):
+    who = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="who", on_delete=models.CASCADE)
+    whom = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="whom", on_delete=models.CASCADE)
+
+    

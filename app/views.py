@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from .models import Post, Comment, Hashtag
+from .models import Post, Comment, Hashtag, Relationship
 from .forms import PostForm, CommentForm, HashtagForm, LoginForm, UserForm
 
 # SIGN IN, OUT
@@ -40,6 +40,8 @@ def home(request):
     else:
         form = PostForm()
         c_form = CommentForm()
+        
+        
         return render(request, 'app/home.html', {'form': form, 'c_form': c_form, 'posts': posts})
 
 def edit(request, pk):
@@ -148,7 +150,33 @@ def user(request, pk):
     user = User.objects.get(username=pk)
     posts = Post.objects.filter(writer=user)
     c_form = CommentForm()
-    return render(request, 'app/user.html', {'user': user, 'posts': posts, 'c_form': c_form})
+    
+    r = Relationship.objects
+    # flw, flwing 명단을 확인하기 위해
+    flw_list = r.filter(who=user)
+    flwer_list = r.filter(whom=user)
+    flw = flw_list.count()
+    flwer = flwer_list.count()
+    
+    # 현재 Signin한 user의 Follow 유무를 위해
+    b = r.filter(who=request.user, whom=user)
+    
+    return render(request, 'app/user.html', {'b': b,'flw': flw, 'flwer': flwer, 'flw_list': flw_list, 'flwer_list': flwer_list, 'user': user, 'posts': posts, 'c_form': c_form})
+
+def follow(request, fk):
+    who = request.user
+    whom = User.objects.get(id=fk)
+    r = Relationship()
+    r.who = who
+    r.whom = whom
+    r.save()
+    return redirect('home')
+
+def unfollow(request, fk):
+    who = request.user
+    whom = User.objects.get(id=fk)
+    Relationship.objects.get(who=who, whom=whom).delete()
+    return redirect('home')
 
 def hashtag(request, pk):
     hashtag = Hashtag.objects.get(id=pk)
