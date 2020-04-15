@@ -259,4 +259,25 @@ def unfollow(request, fk):
 ```
 ##### Template에서 Model.objects.filter(), count()등 method가 동작하지 않아 views에서 넘겨주는 변수들이 많음
 ###### 그렇다고 Template에서 모든 Relationship을 반복하며 확인하는 것은 비효율적이라 생각함
-##### 다음에 할 것 : Post에 좋아요 기능, Signin 안됐을 시 User Template, redirect를 왔던 곳으로 보내기?
+##### 다음에 할 것 : Post에 좋아요 기능, SignIn 안됐을 시 User Template, redirect를 왔던 곳으로 보내기?
+
+___
+#### 2020.04.15
+##### SignIn 안됐을 시 User template 오류 해결, redirect to previous page 가능
+```python
+# views.py
+if request.user.is_authenticated:
+    b = r.filter(who=request.user, whom=user)
+    return render ~~~
+else:
+    return render ~~~ (without b)
+```
+##### 현재 SignIn이 되었는 지 확인을 통해 Follow, Unfollow a태그 조절
+```python
+# views.py
+from django.http import HttpResponse, HttpResponseRedirect
+
+return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+```
+##### 위 코드를 통해 이전 페이지로 redirect 가능
+##### 다음에 할 것 : Post에 좋아요 기능, SignIn 시 Follow한 User의 Post만 보여주기

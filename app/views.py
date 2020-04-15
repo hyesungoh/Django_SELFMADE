@@ -6,7 +6,7 @@ from .forms import PostForm, CommentForm, HashtagForm, LoginForm, UserForm
 # SIGN IN, OUT
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 def home(request):
     posts = Post.objects
@@ -74,6 +74,7 @@ def edit(request, pk):
             post.save()
             post.hashtags.add(*list_tags)
             return redirect('home')
+            # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         form = PostForm(instance=edit_post)
         return render(request, 'app/edit.html', {'e_p': edit_post.id, 'form': form, 'posts': posts})
@@ -84,7 +85,8 @@ def delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if post.writer == request.user:
         post.delete()
-        return redirect('home')
+        # return redirect('home')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         return HttpResponse('You can delete your own post')
     
@@ -98,7 +100,7 @@ def comment(request, pk):
             comment.text= form.cleaned_data["text"]
             comment.c_writer = request.user
             comment.save()
-            return redirect('home')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     
 
 def comment_edit(request, pk):
@@ -116,6 +118,7 @@ def comment_edit(request, pk):
             comment.text = form.cleaned_data["text"]
             comment.save()
             return redirect('home')
+            # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         form = CommentForm(instance=edit_comment)
         return render(request, 'app/comment_edit.html', {'e_c': edit_comment.id ,'form': form, 'posts': posts})
@@ -125,26 +128,9 @@ def comment_delete(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     if comment.c_writer == request.user:
         comment.delete()
-        return redirect('home')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         return HttpResponse('You can delete your own post')
-    
-# def hashtag(request, hashtag=None):
-#     if request.method == 'POST':
-#         form = HashtagForm(request.POST, instance=HashtagForm)
-#         if form.is_valid():
-#             hashtag = form.save(commit=False)
-#             if Hashtag.objects.filter(name=form.cleaned_data['name']):
-#                 form = HashtagForm()
-#                 error_message = "Already"
-#                 return render(request, 'app/hashtag.html', {'form': form, 'e_m': error_message})
-#             else:
-#                 hashtag.name = form.cleaned_data['name']
-#                 hashtag.save()
-#             return redirect('home')
-#     else:
-#         form = HashtagForm(instance=hashtag)
-#         return render(request, 'app/hashtag.html', {'form': form})
 
 def user(request, pk):
     user = User.objects.get(username=pk)
@@ -157,11 +143,14 @@ def user(request, pk):
     flwer_list = r.filter(whom=user)
     flw = flw_list.count()
     flwer = flwer_list.count()
-    
-    # 현재 Signin한 user의 Follow 유무를 위해
-    b = r.filter(who=request.user, whom=user)
-    
-    return render(request, 'app/user.html', {'b': b,'flw': flw, 'flwer': flwer, 'flw_list': flw_list, 'flwer_list': flwer_list, 'user': user, 'posts': posts, 'c_form': c_form})
+
+    if request.user.is_authenticated:
+        # 현재 Signin한 user의 Follow 유무를 위해
+        b = r.filter(who=request.user, whom=user)
+
+        return render(request, 'app/user.html', {'b': b,'flw': flw, 'flwer': flwer, 'flw_list': flw_list, 'flwer_list': flwer_list, 'user': user, 'posts': posts, 'c_form': c_form})
+    else:
+        return render(request, 'app/user.html', {'flw': flw, 'flwer': flwer, 'flw_list': flw_list, 'flwer_list': flwer_list, 'user': user, 'posts': posts, 'c_form': c_form})
 
 def follow(request, fk):
     who = request.user
@@ -170,13 +159,13 @@ def follow(request, fk):
     r.who = who
     r.whom = whom
     r.save()
-    return redirect('home')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def unfollow(request, fk):
     who = request.user
     whom = User.objects.get(id=fk)
     Relationship.objects.get(who=who, whom=whom).delete()
-    return redirect('home')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def hashtag(request, pk):
     hashtag = Hashtag.objects.get(id=pk)
