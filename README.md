@@ -281,3 +281,39 @@ return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 ```
 ##### 위 코드를 통해 이전 페이지로 redirect 가능
 ##### 다음에 할 것 : Post에 좋아요 기능, SignIn 시 Follow한 User의 Post만 보여주기
+
+___
+#### 2020.04.16
+##### Post에 Like 가능
+```python
+# models.py
+class Post(models.Model):
+    ...
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="likes")
+    
+# views.py
+def like(request, pk):
+    # SignIn 확인
+    if not request.user.is_active:
+        return HttpResponse('First SignIn please')
+    
+    post = get_object_or_404(Post, pk=pk)
+    user = request.user
+    
+    # 현재 Like 상태 확인
+    if post.likes.filter(id=user.id).exists():
+        post.likes.remove(user)
+    else:
+        post.likes.add(user)
+    
+    # 이전 페이지로 redirect
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+# urls.py
+path('like/<int:pk>', app.views.like, name='like')
+```
+```html
+<!-- Posts 반복문 중 -->
+<p>{{ post.likes.count }} / <a href="{% url 'like' pk=post.pk %}">like</a></p>
+```
+###### 다음에 할 것 : Template 상속으로 조금 더 유연하게 만들기, 뉴스피드 만들기
