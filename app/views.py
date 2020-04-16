@@ -132,6 +132,21 @@ def comment_delete(request, pk):
     else:
         return HttpResponse('You can delete your own post')
 
+def like(request, pk):
+    if not request.user.is_active:
+        return HttpResponse('First SignIn please')
+    
+    post = get_object_or_404(Post, pk=pk)
+    user = request.user
+    
+    if post.likes.filter(id=user.id).exists():
+        post.likes.remove(user)
+    else:
+        post.likes.add(user)
+        
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    
+    
 def user(request, pk):
     user = User.objects.get(username=pk)
     posts = Post.objects.filter(writer=user)

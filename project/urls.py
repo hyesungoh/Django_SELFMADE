@@ -32,6 +32,8 @@ urlpatterns = [
     path('comment_edit/<int:pk>', app.views.comment_edit, name='comment_edit'),
     path('comment_delete/<int:pk>', app.views.comment_delete, name='comment_delete'),
     
+    path('like/<int:pk>', app.views.like, name='like'),
+    
     path('user/<str:pk>', app.views.user, name='user'),
     path('follow/<int:fk>', app.views.follow, name='follow'),
     path('unfollow/<int:fk>', app.views.unfollow, name='unfollow'),

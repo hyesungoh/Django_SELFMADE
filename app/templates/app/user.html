@@ -41,6 +41,7 @@ views에서 왔던 곳을 기억해서 보내줄 수 있을까? like rubyonrails
     {% endfor %}
     <h6>write at {{ post.date }}</h6>
     
+    <p>{{ post.likes.count }} / <a href="{% url 'like' pk=post.pk %}">like</a></p>
 
     <!-- 작성자와 현재 SignIn한 사람이 같은 지 확인 -->
     {% if post.writer == request.user %}

@@ -16,6 +16,8 @@ class Post(models.Model):
     
     hashtag = models.CharField(max_length=200, blank=True)
     hashtags = models.ManyToManyField('Hashtag', blank=True)
+    
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="likes")
 
 class Comment(models.Model):
     def __str__(self):
