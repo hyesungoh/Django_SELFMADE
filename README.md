@@ -317,3 +317,30 @@ path('like/<int:pk>', app.views.like, name='like')
 <p>{{ post.likes.count }} / <a href="{% url 'like' pk=post.pk %}">like</a></p>
 ```
 ###### 다음에 할 것 : Template 상속으로 조금 더 유연하게 만들기, 뉴스피드 만들기
+
+___
+#### 2020.04.19
+##### Newsfeed 구현 (팔로우한 User의 Post만 보여주는 단계)
+```python
+# views.py 
+def news(request):
+    # SignIn 여부 확인
+    if not request.user.is_active:
+        return HttpResponse('First SignIn please')
+    
+    r_user = request.user
+    rela = Relationship.objects.filter(who=r_user)
+    posts = list()
+    for whom in rela:
+        # 내가 Follow한 User
+        u = User.objects.get(username=whom.whom)
+        # 그 User가 작성자인 Post.objects
+        p = Post.objects.filter(writer=u)
+        # p가 Post.objects이기 때문에
+        for post in p: 
+            posts.append(post)
+            
+    c_form = CommentForm()
+    return render(request, 'app/news.html', {'posts': posts, 'c_form': c_form})
+```
+##### 다음에 할 것 : Newsfeed에 Order_by 작성일, Template 상속
