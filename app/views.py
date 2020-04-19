@@ -44,6 +44,22 @@ def home(request):
         
         return render(request, 'app/home.html', {'form': form, 'c_form': c_form, 'posts': posts})
 
+def news(request):
+    if not request.user.is_active:
+        return HttpResponse('First SignIn please')
+    
+    r_user = request.user
+    rela = Relationship.objects.filter(who=r_user)
+    posts = list()
+    for whom in rela:
+        u = User.objects.get(username=whom.whom)
+        p = Post.objects.filter(writer=u)
+        for post in p:
+            posts.append(post)
+            
+    c_form = CommentForm()
+    return render(request, 'app/news.html', {'posts': posts, 'c_form': c_form})
+    
 def edit(request, pk):
     edit_post = get_object_or_404(Post, pk=pk)
 

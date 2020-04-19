@@ -35,8 +35,10 @@ urlpatterns = [
     path('like/<int:pk>', app.views.like, name='like'),
     
     path('user/<str:pk>', app.views.user, name='user'),
+    path('news/', app.views.news, name='news'),
     path('follow/<int:fk>', app.views.follow, name='follow'),
     path('unfollow/<int:fk>', app.views.unfollow, name='unfollow'),
+    
     path('hashtag/<int:pk>', app.views.hashtag, name='hashtag'),
     
     path('signin', app.views.signin, name='signin'),
