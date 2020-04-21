@@ -56,7 +56,9 @@ def news(request):
         p = Post.objects.filter(writer=u)
         for post in p:
             posts.append(post)
-            
+
+    posts.sort(key=lambda x: x.date, reverse=True)
+
     c_form = CommentForm()
     return render(request, 'app/news.html', {'posts': posts, 'c_form': c_form})
     
