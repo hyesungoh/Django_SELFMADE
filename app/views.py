@@ -9,7 +9,7 @@ from django.contrib.auth import login, authenticate
 from django.http import HttpResponse, HttpResponseRedirect
 
 def home(request):
-    posts = Post.objects
+    posts = Post.objects.all().order_by('-date')
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -69,7 +69,7 @@ def edit(request, pk):
     if edit_post.writer != request.user:
         return HttpResponse('You can edit your own post')
         
-    posts = Post.objects
+    posts = Post.objects.all().order_by('-date')
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=edit_post)
         if form.is_valid():
@@ -123,7 +123,7 @@ def comment(request, pk):
 
 def comment_edit(request, pk):
     edit_comment = get_object_or_404(Comment, pk=pk)
-    posts = Post.objects
+    posts = Post.objects.all().order_by('-date')
 
     # csrf 방지
     if edit_comment.c_writer != request.user:
