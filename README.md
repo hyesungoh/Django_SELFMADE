@@ -344,3 +344,16 @@ def news(request):
     return render(request, 'app/news.html', {'posts': posts, 'c_form': c_form})
 ```
 ##### 다음에 할 것 : Newsfeed에 Order_by 작성일, Template 상속
+
+___
+#### 2020.04.21
+##### Home, Newsfeed 정렬 구현 (order_by, list.sort())
+```python
+# views.py > def news
+# posts = list('post_object', 'post_object', 'post_object', ...)
+posts.sort(key=lambda x: x.date, reverse=True)
+
+# views.py > def home
+posts = Post.objects.all().order_by('-date')
+```
+##### 다음에 할 것 : Template 상속, Front end? User custom? 다시 만들기?
