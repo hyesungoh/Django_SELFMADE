@@ -357,3 +357,18 @@ posts.sort(key=lambda x: x.date, reverse=True)
 posts = Post.objects.all().order_by('-date')
 ```
 ##### 다음에 할 것 : Template 상속, Front end? User custom? 다시 만들기?
+
+___
+#### 2020.04.22
+##### 부모, 자식 Template 연결 성공
+```python
+# settings.py
+'DIRS': [os.path.join(BASE_DIR, 'templates')],
+
+# in html
+{% extends "app/base.html" %}
+```
+###### 주소 오류로 30분을 소비한 내가 밉다
+##### 부모 Template의 모든 것을 자식 template가 상속받아야 하고 html에 뿌려줘야 한다는 것을 몰랐음
+###### project 디자인적으로나 template extends에 관해서 무지했음
+##### 다음에 할 것 : base.html 수정 > home, hashtag, user template에만 상속시켜주면 될 듯
