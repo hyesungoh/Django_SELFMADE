@@ -375,4 +375,14 @@ ___
 
 ___
 #### 2020.04.23
-#####
+##### Bootstrap Theme 적용
+##### Home, User template에 적용 완료
+```python
+# settings.py
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+```
+###### The STATICFILES_DIRS setting should not contain the STATIC_ROOT setting.
+##### 위 Issue로 인해 STATIC_ROOT 주석처리
+##### 다음에 할 것 : Hastag Template에 적용하기, base.html에 posts block, nav block 보기좋게 조정하기
