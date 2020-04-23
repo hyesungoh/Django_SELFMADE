@@ -1,9 +1,28 @@
 {% extends "app/base.html" %}
 
-{% block sign%}
-    {{ block.super }}
-{% endblock %}
-
 {% block posts %}
+    {% if user.is_authenticated %}
+        <h2>hello <a href="{% url 'user' pk=user.username %}">{{ user.username }}</a></h2>
+        <a href= "{% url 'logout' %}">
+            Sign Out    
+        </a>
+
+        <form method='POST' enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+                {{form.as_table}}
+            </table>
+            <input type='submit', value='submit'>
+        </form>
+    {% else %}
+        <h2>hello Stranger</h2>
+        <a href= "{% url 'signin' %}">
+            Sign In Please
+        </a>
+        <a href= "{% url 'signup' %}">
+            or Sign up    
+        </a>
+    {% endif %}
+
     {{ block.super }}
 {% endblock %}
