@@ -8,25 +8,37 @@ views에서 왔던 곳을 기억해서 보내줄 수 있을까? like rubyonrails
 
 
 {% block posts %}
-<h1>This is {{user.username}}'s home</h1>
-<p>follow : {{ flw }}</p>
-{% for f in flw_list %}
-{{ f.whom }}
-{% endfor %}
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('img/home-bg.jpg')">
+<div class="overlay"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      <div class="site-heading">
+        <h1>This is {{user.username}}'s home</h1>
+        <span class="subheading">follow : {{ flw }} / following : {{ flwer }}</span>
+            {% for f in flw_list %}
+            {{ f.whom }}
+            {% endfor %}
 
-<p>following : {{ flwer }}</p>
-{% for f in flwer_list %}
-{{ f.who }}
-{% endfor %}
+            {% for f in flwer_list %}
+            {{ f.who }}
+            {% endfor %}
+        {% if request.user.is_authenticated %}
+            {% if b %}
+                <a href ="{% url 'unfollow' fk=user.id %}">unfollow</a>
+            {% else %}
+                <a href="{% url 'follow' fk=user.id%}">follow</a>
+            {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+</header>
 
 
-{% if request.user.is_authenticated %}
-    {% if b %}
-        <a href ="{% url 'unfollow' fk=user.id %}">unfollow</a>
-    {% else %}
-        <a href="{% url 'follow' fk=user.id%}">follow</a>
-    {% endif %}
-{% endif %}
+
 
     {{ block.super }}
 {% endblock %}

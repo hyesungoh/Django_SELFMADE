@@ -372,3 +372,7 @@ ___
 ##### 부모 Template의 모든 것을 자식 template가 상속받아야 하고 html에 뿌려줘야 한다는 것을 몰랐음
 ###### project 디자인적으로나 template extends에 관해서 무지했음
 ##### 다음에 할 것 : base.html 수정 > home, hashtag, user template에만 상속시켜주면 될 듯
+
+___
+#### 2020.04.23
+#####
