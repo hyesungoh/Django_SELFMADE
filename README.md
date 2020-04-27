@@ -385,4 +385,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 ```
 ###### The STATICFILES_DIRS setting should not contain the STATIC_ROOT setting.
 ##### 위 Issue로 인해 STATIC_ROOT 주석처리
-##### 다음에 할 것 : Hastag Template에 적용하기, base.html에 posts block, nav block 보기좋게 조정하기
+##### 다음에 할 것 : Hashtag Template에 적용하기, base.html에 posts block, nav block 보기좋게 조정하기
+
+___
+#### 2020.04.27
+##### base.html에 Nav, Footer block 약간 수정
+##### Hashtag Template 적용 완료
+##### 다음에 할 것 : Nav Block에 User home 추가하기, User 검색 기능 추가하기
