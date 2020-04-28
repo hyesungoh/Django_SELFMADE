@@ -392,3 +392,29 @@ ___
 ##### base.html에 Nav, Footer block 약간 수정
 ##### Hashtag Template 적용 완료
 ##### 다음에 할 것 : Nav Block에 User home 추가하기, User 검색 기능 추가하기
+
+___
+#### 2020.04.28
+##### User Search 기능 구현
+```html
+<!-- base.html > nav block -->
+<li class="nav-item">
+    <form action="{% url 'search' %}" method="GET">
+        <input type="search" name="name">
+        <input type="submit" value="submit">
+    </form>
+</li>
+```
+
+```python
+# views.py
+def search(request):
+    name = request.GET["name"]
+    if name:
+        users = User.objects.filter(username__contains=name)
+    return render(request, 'app/search.html', {'users': users, 'name': name})
+
+```
+###### url상 pk, fk가 아닌 request.GET으로 값을 받아올 수 있는지 몰랐다..
+##### base.html에 posts block을 빼고 nav와 footer만 남겨둠
+###### 용도에 맞게 모든 template에 적용하기 위함
