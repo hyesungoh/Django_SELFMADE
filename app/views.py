@@ -200,6 +200,12 @@ def unfollow(request, fk):
     Relationship.objects.get(who=who, whom=whom).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+def search(request):
+    name = request.GET["name"]
+    if name:
+        users = User.objects.filter(username__contains=name)
+    return render(request, 'app/search.html', {'users': users, 'name': name})
+
 def hashtag(request, pk):
     hashtag = Hashtag.objects.get(id=pk)
     posts = Post.objects.filter(hashtags=hashtag)

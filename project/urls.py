@@ -38,6 +38,7 @@ urlpatterns = [
     path('news/', app.views.news, name='news'),
     path('follow/<int:fk>', app.views.follow, name='follow'),
     path('unfollow/<int:fk>', app.views.unfollow, name='unfollow'),
+    path('search', app.views.search, name='search'),
     
     path('hashtag/<int:pk>', app.views.hashtag, name='hashtag'),
     
