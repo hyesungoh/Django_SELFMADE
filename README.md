@@ -418,3 +418,15 @@ def search(request):
 ###### url상 pk, fk가 아닌 request.GET으로 값을 받아올 수 있는지 몰랐다..
 ##### base.html에 posts block을 빼고 nav와 footer만 남겨둠
 ###### 용도에 맞게 모든 template에 적용하기 위함
+
+___
+#### 2020.04.30
+##### base.html의 user a tag 오류 수정
+```html
+<!-- <a class="nav-link" href="{% url 'user' pk=user.username%}">{{ user.username }}</a>
+User template 들어가면 그 유저로 보였음-->
+
+<a class="nav-link" href="{% url 'user' pk=user.username%}">{{ request.user.username }}</a>
+```
+###### news template를 위한 nav li 작성, search template 디자인 조정함
+##### 다음에 할 것 : Post 작성과 수정을 위한 Url을 개설할까? EDIT 방식은 수정이 필요함 > 글 작성까지 새로 만들면 더 깔끔할 듯
