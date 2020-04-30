@@ -32,8 +32,7 @@
             <h3 class="post-subtitle">
               {{ post.body }}
             </h3>
-          <p class="post-meta">Posted by
-            on September 24, 2019</p>
+          <p class="post-meta">writed at {{ post.date }}</p>
             {% if post.image %}
             <img src="{{ post.image.url }}">
             {% endif %}
@@ -45,7 +44,6 @@
                 </a>
             {% endfor %}
             </h6>
-            <h6>write at {{ post.date }}</h6>
 
             <p>{{ post.likes.count }} / <a href="{% url 'like' pk=post.pk %}">like</a></p>
 
