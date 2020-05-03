@@ -69,7 +69,7 @@ def edit(request, pk):
     if edit_post.writer != request.user:
         return HttpResponse('You can edit your own post')
         
-    posts = Post.objects.all().order_by('-date')
+    # posts = Post.objects.all().order_by('-date')
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=edit_post)
         if form.is_valid():
@@ -95,7 +95,8 @@ def edit(request, pk):
             # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         form = PostForm(instance=edit_post)
-        return render(request, 'app/edit.html', {'e_p': edit_post.id, 'form': form, 'posts': posts})
+        return render(request, 'app/edit.html', {'form': form})
+        # return render(request, 'app/edit.html', {'e_p': edit_post.id, 'form': form, 'posts': posts})
         
         
         
