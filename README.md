@@ -430,3 +430,9 @@ User template 들어가면 그 유저로 보였음-->
 ```
 ###### news template를 위한 nav li 작성, search template 디자인 조정함
 ##### 다음에 할 것 : Post 작성과 수정을 위한 Url을 개설할까? EDIT 방식은 수정이 필요함 > 글 작성까지 새로 만들면 더 깔끔할 듯
+
+___
+#### 2020.05.03
+##### Edit Template 다시 구현 (Edit할 포스트만 보여주기)
+###### base.html도 extends함
+##### 다음에 할 것 : Post 작성도 다시 구현, Bootstrap form with django?
