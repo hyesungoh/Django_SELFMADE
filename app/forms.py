@@ -7,6 +7,14 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'body', 'image', 'hashtag']
         
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'body': forms.TextInput(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control-file'}),
+            'hashtag': forms.TextInput(attrs={'class': 'form-control'})
+        }
+        
+        
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment

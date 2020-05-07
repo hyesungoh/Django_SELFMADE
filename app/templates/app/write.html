@@ -8,15 +8,17 @@
   <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
       <div class="site-heading">
-            <form method='POST' enctype="multipart/form-data">
-            {% csrf_token %}
-            <table>
-                {{form.as_table}}
-            </table>
-            <input type='submit', value='submit'>
-            </form>
-        <span class="subheading"></span>
-            
+              <div class="form-group">
+                <form method='POST' enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    {{form.as_table}}
+                </table>
+                <br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            <span class="subheading"></span>
+          </div>
       </div>
     </div>
   </div>
