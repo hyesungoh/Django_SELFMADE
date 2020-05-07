@@ -436,3 +436,24 @@ ___
 ##### Edit Template 다시 구현 (Edit할 포스트만 보여주기)
 ###### base.html도 extends함
 ##### 다음에 할 것 : Post 작성도 다시 구현, Bootstrap form with django?
+
+___
+#### 2020.05.07
+##### Post 작성 기능을 Write view와 template으로 기능하게 함
+###### nav와 home에서 write url로 이동 가능
+##### Django model form class 적용 방법을 배움
+```python
+# forms.py
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'body', 'image', 'hashtag']
+        
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'body': forms.TextInput(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control-file'}),
+            'hashtag': forms.TextInput(attrs={'class': 'form-control'})
+        }
+```
+##### 다음에 할 것 : form 디자인 조금 더 / HttpResponse도 꾸밀 수 있나?
