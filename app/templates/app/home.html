@@ -8,17 +8,9 @@
     <div class="col-lg-8 col-md-10 mx-auto">
       <div class="site-heading">
         {% if user.is_authenticated %}
-            <h1>Hello <a href="{% url 'user' pk=user.username %}">{{ user.username }}</a></h1>
+            <h1>Hello <a href="{% url 'user' pk=user.username %}">{{ user.username }}</a></h1>  
             <a href= "{% url 'logout' %}">Sign Out</a>
-
-            <form method='POST' enctype="multipart/form-data">
-            {% csrf_token %}
-            <table>
-                {{form.as_table}}
-            </table>
-            <input type='submit', value='submit'>
-            </form>
-          
+            <span class="subheading"><a href="/write">write a post</a></span>
         {% else %}
             <h1>Hello Stranger</h1>
             <a href= "{% url 'signin' %}">
@@ -28,7 +20,7 @@
                 or Sign up    
             </a>
         {% endif %}
-        <span class="subheading"></span>
+        
             
       </div>
     </div>

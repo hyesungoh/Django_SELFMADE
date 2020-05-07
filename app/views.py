@@ -10,14 +10,19 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 def home(request):
     posts = Post.objects.all().order_by('-date')
-    if request.method == 'POST':
+    return render(request, 'app/home.html', {'posts': posts})
+
+def write(request):
+    if not request.user.is_active:
+        return HttpResponse('You can write a post to Signin or up')
+    
+    if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.date = timezone.now()
             post.writer = request.user
-            
-            # '#'을 기준으로 해시태그 만들기 !
+
             tags = form.cleaned_data['hashtag']
             str_tags = tags.split('#')
             list_tags = list()
@@ -30,19 +35,15 @@ def home(request):
                     hashtag.name = tag
                     hashtag.save()
                     list_tags.append(hashtag)
-            
+
             post.save()
             post.hashtags.add(*list_tags)
-            
-            # 이걸 따로 할 필요가 있을까?
-            # form.save_m2m()
+
             return redirect('home')
     else:
         form = PostForm()
-        c_form = CommentForm()
-        
-        
-        return render(request, 'app/home.html', {'form': form, 'c_form': c_form, 'posts': posts})
+
+        return render(request, 'app/write.html', {'form': form})
 
 def news(request):
     if not request.user.is_active:
@@ -61,7 +62,8 @@ def news(request):
 
     c_form = CommentForm()
     return render(request, 'app/news.html', {'posts': posts, 'c_form': c_form})
-    
+
+
 def edit(request, pk):
     edit_post = get_object_or_404(Post, pk=pk)
 
