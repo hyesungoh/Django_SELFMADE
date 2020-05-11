@@ -457,3 +457,19 @@ class PostForm(forms.ModelForm):
         }
 ```
 ##### 다음에 할 것 : form 디자인 조금 더 / HttpResponse도 꾸밀 수 있나?
+
+___
+#### 2020.05.11
+##### 기존 return httpresponse를 error view를 불러오는 것으로 대체
+```python
+# views.py
+
+def something(request):
+    ...
+    return error(request, "You can write a post with SIGNIN")
+
+def error(request, error_msg):
+    return render(request, 'app/error.html', {'error_msg': error_msg})
+```
+###### 이렇게하여 error page에 base.html 상속등 디자인을 할 수 있게 됨
+##### 다음에 할 것 : edit template design
