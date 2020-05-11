@@ -46,6 +46,7 @@ urlpatterns = [
     path('signin', app.views.signin, name='signin'),
     path('signup', app.views.signup, name='signup'),
     
+    path('error', app.views.error, name='error'),
     #Auth에서 제공해주는 기능쓰기
     path('app/', include('django.contrib.auth.urls')),
 ]

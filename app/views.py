@@ -14,7 +14,7 @@ def home(request):
 
 def write(request):
     if not request.user.is_active:
-        return HttpResponse('You can write a post to Signin or up')
+        return error(request, "You can write a post with SIGNIN")
     
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
@@ -47,7 +47,7 @@ def write(request):
 
 def news(request):
     if not request.user.is_active:
-        return HttpResponse('First SignIn please')
+        return error(request, "First SignIn please")
     
     r_user = request.user
     rela = Relationship.objects.filter(who=r_user)
@@ -69,7 +69,7 @@ def edit(request, pk):
 
     # csrf 방지
     if edit_post.writer != request.user:
-        return HttpResponse('You can edit your own post')
+        return error(request, "You can edit your own post")
         
     # posts = Post.objects.all().order_by('-date')
     if request.method == 'POST':
@@ -109,7 +109,7 @@ def delete(request, pk):
         # return redirect('home')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
-        return HttpResponse('You can delete your own post')
+        return error(request, "You can edit your own post")
     
 def comment(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -130,7 +130,7 @@ def comment_edit(request, pk):
 
     # csrf 방지
     if edit_comment.c_writer != request.user:
-        return HttpResponse('You can edit your own comment')
+        return error(request, "You can edit your own post")
 
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=edit_comment)
@@ -151,11 +151,11 @@ def comment_delete(request, pk):
         comment.delete()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
-        return HttpResponse('You can delete your own post')
+        return error(request, "You can delete your own post")
 
 def like(request, pk):
     if not request.user.is_active:
-        return HttpResponse('First SignIn please')
+        return error(request, "First SignIn please")
     
     post = get_object_or_404(Post, pk=pk)
     user = request.user
@@ -225,7 +225,7 @@ def signin(request):
             login(request, user)
             return redirect('home')
         else:
-            return HttpResponse('Fail to signin')
+            return error(request, "Fail to SIGNIN")
     else:
         form = LoginForm()
         return render(request, 'app/signin.html', {'form': form})
@@ -238,7 +238,10 @@ def signup(request):
             login(request, new_user)
             return redirect('home')
         else:
-            return HttpResponse('Fail to Signup')
+            return error(request, "Fail to SIGNUP")
     else:
         form = UserForm()
         return render(request, 'app/signup.html', {'form': form})
+    
+def error(request, error_msg):
+    return render(request, 'app/error.html', {'error_msg': error_msg})
