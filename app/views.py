@@ -79,6 +79,7 @@ def edit(request, pk):
             post.date = timezone.now()
             post.writer = request.user
             
+            post.hashtags.clear()
             tags = form.cleaned_data['hashtag']
             str_tags = tags.split('#')
             list_tags = list()
