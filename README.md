@@ -473,3 +473,14 @@ def error(request, error_msg):
 ```
 ###### 이렇게하여 error page에 base.html 상속등 디자인을 할 수 있게 됨
 ##### 다음에 할 것 : edit template design
+
+___
+#### 2020.05.12
+##### Edit template를 write template와 똑같이 디자인
+##### Post Edit간에 hashtag를 수정할 떄 기존 hashtag가 유지되는 Issue 발생
+```python
+# views.py > def edit
+    post.hashtags.clear()
+```
+###### 위 method를 사용하여 간단히 해결
+##### 다음에 할 것 : SignIn, Up template design?
