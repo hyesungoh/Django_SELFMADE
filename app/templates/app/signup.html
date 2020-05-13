@@ -1,10 +1,31 @@
-<h2>
-    SIGN UP
-</h2>
-<form method="POST" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">
-        Sing up
-    </button>
-</form>
+{% extends "app/base.html" %}
+
+{% block footer %}
+
+<header class="masthead" style="background-image: url('img/home-bg.jpg')">
+<div class="overlay"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-8 mx-auto">
+      <div class="site-heading">
+        <h1>Sign Up</h1>
+            
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+<div class="col-lg-7 col-md-5 mx-auto">
+    <div class="form-group">
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+                <button type="submit">
+                    Sign In
+                </button>
+        </form>
+    </div>
+</div>
+{{ block.super }}
+{% endblock %}
