@@ -484,3 +484,14 @@ ___
 ```
 ###### 위 method를 사용하여 간단히 해결
 ##### 다음에 할 것 : SignIn, Up template design?
+
+___
+#### 2020.05.13
+##### SignIn, SignUp template 새롭게 디자인
+###### forms.py에 UserForm widgets를 활용했는데 SignUp에만 먹는 이슈 존재
+```html
+{{ form.as_p }}
+<!-- 위처럼 한 번에 뿌려주는 것 외에 -->
+{{ form.username }}
+<!-- 이렇게 할 수 있다는 것을 배움 -->
+```
