@@ -10,7 +10,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 def home(request):
     posts = Post.objects.all().order_by('-date')
-    return render(request, 'app/home.html', {'posts': posts})
+    c_form = CommentForm()
+    return render(request, 'app/home.html', {'posts': posts, 'c_form': c_form})
 
 def write(request):
     if not request.user.is_active:
