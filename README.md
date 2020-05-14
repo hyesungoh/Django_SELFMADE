@@ -495,3 +495,14 @@ ___
 {{ form.username }}
 <!-- 이렇게 할 수 있다는 것을 배움 -->
 ```
+
+___
+#### 2020.05.14
+##### comment_edit template를 base.html 상속하여 새롭게 디자인
+###### 기존 모든 post와 모든 comment들을 보여주는 방식에서 수정하는 댓글이 달린 post와 수정 할 comment를 form으로 보여줌
+```python
+# views.py > def comment_edit
+    post = Post.objects.get(comments = edit_comment)
+    # comment.id를 가지고 post를 찾는데 거창한 코드가 필요없어서 놀람
+```
+##### 다음에 할 것 : 다른 프로젝트를 만들기는 귀찮으니 이 프로젝트에 새로운 기능을 구현해볼까? 예를 들면 전역일까지 시간계산기
