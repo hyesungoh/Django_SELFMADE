@@ -128,8 +128,8 @@ def comment(request, pk):
 
 def comment_edit(request, pk):
     edit_comment = get_object_or_404(Comment, pk=pk)
-    posts = Post.objects.all().order_by('-date')
-
+    post = Post.objects.get(comments = edit_comment)
+    
     # csrf 방지
     if edit_comment.c_writer != request.user:
         return error(request, "You can edit your own post")
@@ -144,7 +144,7 @@ def comment_edit(request, pk):
             # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         form = CommentForm(instance=edit_comment)
-        return render(request, 'app/comment_edit.html', {'e_c': edit_comment.id ,'form': form, 'posts': posts})
+        return render(request, 'app/comment_edit.html', {'e_c': edit_comment.id ,'form': form, 'post': post})
 
     
 def comment_delete(request, pk):

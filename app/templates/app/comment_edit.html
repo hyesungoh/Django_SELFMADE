@@ -1,51 +1,47 @@
-{% if user.is_authenticated %}
-    <h2>hello {{ user.username }}</h2>
-    <a href= "{% url 'logout' %}">
-        Sign Out    
-    </a>
-    
-{% else %}
-    <h2>hello Stranger</h2>
-    <a href= "{% url 'signin' %}">
-        Sign In Please
-    </a>
-    <a href= "{% url 'signup' %}">
-        or Sign up    
-    </a>
-{% endif %}
+{% extends "app/base.html" %}
+{% block footer %}
 
-{% for post in posts.all %}
-    <h6>write by {{ post.writer }} </h6>
-    <h4>{{ post.title }}</h4>
-    <h5>{{ post.body }}</h5>
-    {% if post.image %}
-        <img src="{{ post.image.url }}">
-    {% endif %}
+<header class="masthead" style="background-image: url('img/home-bg.jpg')">
+<div class="overlay"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      <div class="site-heading">
+          <h1>Comment editing</h1>
+            <span class="subheading"></span>
+          </div>
+          
+    </div>
+  </div>
+</div>
+</header>
 
-    <h6>tags : </h6>
-    {% for hashtag in post.hashtags.all %}
-        <a href="{% url 'hashtag' pk=hashtag.id %}">
-            <span>{{ hashtag.name }}</span>
-        </a>
-    {% endfor %}
-
-    <h6>write at {{ post.date }}</h6>
-    <p>{{ post.likes.count }} / <a href="{% url 'like' pk=post.pk %}">like</a></p>
-    <!-- 댓글 보여주기 -->
-    {% for comment in post.comments.all %}
-        <!--  단지 같은 열에 두고싶은 귀찮은 마음에.. else 추가-->
-        {% if e_c == comment.id %}
-            <form method='POST' action='/comment_edit/{{ comment.id }}'>
-                {% csrf_token %}
-                <table>
-                    {{ form.as_p }}
-                </table>
-                <input type='submit', value='submit'>
-            </form>
-        {% else %}
-            <h6>{{ comment.c_writer }} : {{ comment.text }} </h6>
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-preview">
+        <h6>write by <a href="{% url 'user' pk=post.writer %}">{{ post.writer }}</a> </h6>
+        <h2 class="post-title">{{ post.title }}</h2>
+        <h3 class="post-subtitle">{{ post.body }}</h3>
+        <p class="post-meta">writed at {{ post.date }}</p>
+        {% if post.image %}
+            <img src="{{ post.image.url }}">
         {% endif %}
-    {% endfor %}
-    <hr/>
-    
-{% endfor %}
+        <h6>tags : 
+        {% for hashtag in post.hashtags.all %}
+            <a href="{% url 'hashtag' pk=hashtag.id %}">{{ hashtag.name }}</a>
+        {% endfor %}
+        </h6>
+        <p>likes = {{ post.likes.count }}</p>
+        
+        <form method='POST' action='/comment_edit/{{ e_c }}'>
+            {% csrf_token %}
+            <table>
+                {{ form.as_p }}
+            </table>
+            <input type='submit', value='submit'>
+        </form>
+    </div>
+                    
+{{ block.super }}
+{% endblock %}
