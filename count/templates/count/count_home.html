@@ -1,0 +1,12 @@
+<h3>
+    Counting stars
+</h3>
+<form method="POST" action="/count">
+    {% csrf_token %}
+    <span>start day</span> <input type="date" name="start_day">
+    <span>end day</span><input type="date" name="end_day">
+    <span>present day</span><input type="date" name="present_day">
+    <input type="submit" value="submit">
+</form>
+
+{{ remain_days }}

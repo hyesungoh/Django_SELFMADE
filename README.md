@@ -506,3 +506,37 @@ ___
     # comment.id를 가지고 post를 찾는데 거창한 코드가 필요없어서 놀람
 ```
 ##### 다음에 할 것 : 다른 프로젝트를 만들기는 귀찮으니 이 프로젝트에 새로운 기능을 구현해볼까? 예를 들면 전역일까지 시간계산기
+
+___
+#### 2020.05.19
+##### count app 새로 만듦
+```python
+# settings.py
+INSTALLED_APPS = [
+    'count.apps.CountConfig',
+    ...
+]
+
+# urls.py
+urlpatterns = [
+    path('count', count.views.count_home, name="count_home"),
+    ...
+]
+```
+###### 서비스를 여러 개의 app으로 만드는 버릇을 들이자
+```python
+# count/views.py
+from datetime import datetime
+
+def count_home(request):
+    ...
+    date_format = "%Y-%m-%d"
+    start_day = datetime.strptime(request.POST["start_day"], date_format) 
+        end_day =datetime.strptime(request.POST["end_day"], date_format)
+        present_day =datetime.strptime(request.POST["present_day"], date_format)
+
+        remain_days = end_day - present_day
+        ...
+```
+##### datetime을 이용하여 간단하게 남은 일 수를 계산해봄
+##### 다음에 할 것 : 남은 일 수 %로 보여주기 등 하고싶은 대로 만들어보자
