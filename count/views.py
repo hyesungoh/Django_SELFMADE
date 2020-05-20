@@ -9,7 +9,12 @@ def count_home(request):
         end_day =datetime.strptime(request.POST["end_day"], date_format)
         present_day =datetime.strptime(request.POST["present_day"], date_format)
 
+        total_days = end_day - start_day
         remain_days = end_day - present_day
-        return render(request, 'count/count_home.html', {"remain_days": remain_days})
+        ran_days = present_day - start_day
+        
+        ran_percent = (ran_days / total_days) * 100
+        
+        return render(request, 'count/count_home.html', {"remain_days": remain_days, "total_days": total_days, "ran_days": ran_days, "ran_percent": ran_percent})
     else:
         return render(request, 'count/count_home.html')
