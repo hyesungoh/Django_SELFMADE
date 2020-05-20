@@ -540,3 +540,20 @@ def count_home(request):
 ```
 ##### datetime을 이용하여 간단하게 남은 일 수를 계산해봄
 ##### 다음에 할 것 : 남은 일 수 %로 보여주기 등 하고싶은 대로 만들어보자
+
+___
+#### 2020.05.20
+##### count/home에 총 날짜, 한 날짜, 남은 날짜, 한 날짜 퍼센트로 볼 수 있음
+```python
+# count/views.py
+def count_home(request):
+    ...
+    total_days = end_day - start_day
+    remain_days = end_day - present_day
+    ran_days = present_day - start_day
+    ran_percent = (ran_days / total_days) * 100
+    
+    # datetime.timedelta 객체의 쉬운 사칙연산 지원으로 간단히 만듦
+    ...
+```
+##### 다음에 할 것 : aws ec2 배포를 공부해야 함, app에서 count 기능도 사용할 수 있게끔?
