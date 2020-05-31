@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 
 import app.views 
 import count.views
+from diary.views import diary_home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -50,6 +51,7 @@ urlpatterns = [
     path('error', app.views.error, name='error'),
    
     path('count', count.views.count_home, name="count_home"),
+    path('diary', diary_home.as_view()),
     #Auth에서 제공해주는 기능쓰기
     path('app/', include('django.contrib.auth.urls')),
 ]

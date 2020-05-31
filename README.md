@@ -572,3 +572,40 @@ ___
 ___
 #### 2020.05.27
 ~~***전역이 5일 남으니 손에 안잡힌다***~~
+
+___
+#### 2020.05.31
+##### 기존 FBV와 달리 CBV로 새로운 앱을 만들어 봄
+```python
+# settings.python
+
+INSTALLED_APPS = [
+    ...
+    'diary.apps.DiaryConfig',
+    ...
+]
+```
+##### 제발 까먹지말자
+```python
+# urls.py
+from diary.views import diary_home
+...
+    path('diary', diary_home.as_view())
+    # 이렇게 해줬는데 그냥 diary.views를 import하는 것과 많은 차이가 나는지 궁금하다
+```
+```python
+# diary/views.py
+from django.shortcuts import render
+from django.views.generic import TemplateView
+
+class diary_home(TemplateView):
+    template_name = "diary_home.html"
+```
+###### Django의 제네릭 뷰인 TemplateView를 이용함
+
+##### CBV의 장점
+- GET, POST 등의 HTTP 메소드에 따른 처리를 메소드명으로 구분 할 수 있어, 좀 더 깔끔한 구조의(IF 문이 없는) 코드를 생산할 수 있다.
+- 다중 상속과 같은 객체 지향 기술이 가능하여 코드의 재사용성이나 개발 생산성을 높여준다.
+
+###### 불침번할 때 가끔 읽었던 Two scoops of django에서도 FBV보다 CBV를 추천하던데 이제는 그 이유를 살짝 알 것 같기도하고
+##### 다음에 할 것 : 내일 연등은 군생활 마지막인데 간단하게 회고록을 써보자
