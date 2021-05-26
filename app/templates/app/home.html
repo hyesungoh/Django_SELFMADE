@@ -54,7 +54,7 @@
             {% endfor %}
             </h6>
 
-            <p>{{ post.likes.count }} / <a href="{% url 'like' pk=post.pk %}">like</a></p>
+            <p>{{ post.likes.count }} / <a href="{% url 'like' pk=post.pk %}">💙</a></p>
 
             <!-- 작성자와 현재 SignIn한 사람이 같은 지 확인 -->
             {% if post.writer == request.user %}
